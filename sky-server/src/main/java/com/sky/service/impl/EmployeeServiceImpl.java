@@ -83,10 +83,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         //使用BCrypt加密密码
         String encodedPassword = passwordEncoder.encode(PasswordConstant.DEFAULT_PASSWORD);
         employee.setPassword(encodedPassword);;
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+
         employeeMapper.insert(employee);//后续步骤定义
 
 
