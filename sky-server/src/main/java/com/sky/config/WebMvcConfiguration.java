@@ -5,6 +5,7 @@ import com.sky.json.JacksonObjectMapper;
 import com.sky.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -32,6 +33,9 @@ import java.util.List;
 @Slf4j
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
+    // ✅ 1. 读取配置文件中的路径
+    @Value("${sky.upload.path}")
+    private String uploadPath;
     @Autowired
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
 
@@ -74,6 +78,10 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        //配置好静态资源路径（有改动的地方）
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("file:"+ uploadPath);
+
     }
     /**
      * 密码加密器
@@ -96,6 +104,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         //将自己的消息转化器加入容器中
         converters.add(0,converter);
     }
+
 
 
 }
